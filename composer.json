@@ -1,0 +1,46 @@
+{
+  "name": "izziaraffaele/laravel-jms",
+  "version": "0.1.0",
+  "homepage": "https://github.com/izziaraffaele/laravel-jms",
+  "description": "JMS Serializer integration with Laravel",
+  "keywords": [
+    "jms",
+    "laravel",
+    "serializer",
+    "php"
+  ],
+  "authors": [
+    {
+      "name": "izziaraffaele",
+      "homepage": "https://github.com/izziaraffaele",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/izziaraffaele/laravel-jms/issues",
+    "source": "https://github.com/izziaraffaele/laravel-jms"
+  },
+  "license": "MIT",
+  "type": "library",
+  "require": {
+    "php": ">=5.3.0",
+    "monolog/monolog": "1.*",
+    "jms/serializer": "^1.1",
+    "illuminate/support": "^5.1"
+  },
+  "require-dev": {
+    "phpdocumentor/phpdocumentor": "2.*",
+    "phpunit/phpunit": "4.*",
+    "sebastian/phpcpd": "2.*"
+  },
+  "autoload": {
+      "psr-4": {
+          "IRWeb\\LaravelJMS\\": "src/"
+      }
+  },
+  "autoload-dev": {
+      "psr-4": {
+          "IRWeb\\LaravelJMS\\Tests\\": "tests/"
+      }
+  }
+}

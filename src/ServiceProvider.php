@@ -1,0 +1,95 @@
+<?php
+
+/**
+ * laravel-jms
+ * @package Serializer
+ * @version 0.1.0
+ * @link https://github.com/izziaraffaele/laravel-jms
+ * @author izziaraffaele <https://github.com/izziaraffaele>
+ * @license https://github.com/izziaraffaele/laravel-jms/blob/master/LICENSE
+ * @copyright Copyright (c) 2014, izziaraffaele 
+ */
+namespace IRWeb\LaravelJMS;
+
+use JMS\Serializer\Serializer;
+use JMS\Serializer\SerializerBuilder;
+use JMS\Serializer\SerializerInterface;
+use JMS\Serializer\Handler\HandlerRegistry;
+use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+
+/**
+ * Larave service provider class
+ * @author izziaraffaele <https://github.com/izziaraffaele>
+ * @since 0.1.0
+ */
+class ServiceProvider extends BaseServiceProvider
+{
+    /**
+     * Boot service provider.
+     */
+    public function boot()
+    {
+        $this->publishes([
+            $this->getConfigPath() => config_path('jms.php'),
+        ], 'config');
+    }
+
+    /**
+     * Register bindings in the container.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->registerSerializer();
+    }
+
+    protected function registerCustomHandlers(SerializerBuilder $serializer, array $handlers)
+    {
+        foreach ($handlers as $handler) 
+        {
+            $serializer->configureHandlers(function(HandlerRegistry $registry) {
+                $registry->registerSubscribingHandler(new $handler());
+            });
+        }
+    }
+
+    protected function registerSerializer()
+    {
+        $this->app->singleton(Serializer::class, function ($app) {
+            $config = config('jms');
+
+            $serializer = $this->createSerializer()
+              ->setCacheDir($config['cache']);
+
+            $this->registerCustomHandlers($serializer, $config['handlers']);
+            
+            return $serializer->build();
+        });
+
+        $this->app->bind(SerializerInterface::class, Serializer::class);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getConfigPath()
+    {
+        return __DIR__ . '/../config/jms.php';
+    }
+
+    /**
+     * Merge config
+     */
+    protected function mergeConfig()
+    {
+        $this->mergeConfigFrom(
+            $this->getConfigPath(), 'jms'
+        );
+    }
+
+    protected function getSerializer()
+    {
+        return JMS\Serializer\SerializerBuilder::create()->setDebug(config('app.debug'));
+    }
+}
