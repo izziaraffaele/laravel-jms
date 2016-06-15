@@ -26,7 +26,7 @@ use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 class ServiceProvider extends BaseServiceProvider
 {
 
-    protected $defer = false;
+    protected $defer = true;
 
     /**
      * Boot service provider.
@@ -64,7 +64,7 @@ class ServiceProvider extends BaseServiceProvider
     {
         foreach ($handlers as $handler) 
         {
-            $serializer->configureHandlers(function(HandlerRegistry $registry) {
+            $serializer->configureHandlers(function(HandlerRegistry $registry) use ($handler){
                 $registry->registerSubscribingHandler(new $handler());
             });
         }
