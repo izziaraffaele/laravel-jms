@@ -13,6 +13,6 @@ class Facade extends BaseFacade
      */
     protected static function getFacadeAccessor()
     {
-        return JMS\Serializer\Serializer::class;
+        return 'JMS\Serializer\Serializer';
     }
 }

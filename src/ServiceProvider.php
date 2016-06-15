@@ -15,6 +15,7 @@ use JMS\Serializer\Serializer;
 use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\SerializerInterface;
 use JMS\Serializer\Handler\HandlerRegistry;
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
 /**
@@ -25,7 +26,7 @@ use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 class ServiceProvider extends BaseServiceProvider
 {
 
-    protected $defer = true;
+    protected $defer = false;
 
     /**
      * Boot service provider.
@@ -74,10 +75,15 @@ class ServiceProvider extends BaseServiceProvider
         $this->app->singleton(Serializer::class, function ($app) {
             $config = config('jms');
 
-            $serializer = $this->createSerializer()
-              ->setCacheDir($config['cache']);
+            $serializer = $this->getSerializer()
+              ->setCacheDir($config['cache'])
+              ->addDefaultHandlers();
 
             $this->registerCustomHandlers($serializer, $config['handlers']);
+
+            AnnotationRegistry::registerAutoloadNamespace(
+                'JMS\Serializer\Annotation', __DIR__.'/../vendor/jms/serializer/src'
+            );
             
             return $serializer->build();
         });
@@ -105,6 +111,6 @@ class ServiceProvider extends BaseServiceProvider
 
     protected function getSerializer()
     {
-        return JMS\Serializer\SerializerBuilder::create()->setDebug(config('app.debug'));
+        return SerializerBuilder::create()->setDebug(config('app.debug'));
     }
 }
