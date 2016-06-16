@@ -24,10 +24,10 @@ use Illuminate\Support\ServiceProvider as BaseServiceProvider;
  * @since 0.1.0
  */
 class ServiceProvider extends BaseServiceProvider
-{
+{ 
 
     protected $defer = true;
-
+    
     /**
      * Boot service provider.
      */
@@ -45,6 +45,7 @@ class ServiceProvider extends BaseServiceProvider
      */
     public function register()
     {
+        $this->registerAnnotations();
         $this->registerSerializer();
     }
 
@@ -69,7 +70,10 @@ class ServiceProvider extends BaseServiceProvider
             });
         }
     }
-
+    protected function registerAnnotations()
+    {
+        AnnotationRegistry::registerLoader('class_exists');
+    }
     protected function registerSerializer()
     {
         $this->app->singleton(Serializer::class, function ($app) {
@@ -80,10 +84,6 @@ class ServiceProvider extends BaseServiceProvider
               ->addDefaultHandlers();
 
             $this->registerCustomHandlers($serializer, $config['handlers']);
-
-            AnnotationRegistry::registerAutoloadNamespace(
-                'JMS\Serializer\Annotation', __DIR__.'/../vendor/jms/serializer/src'
-            );
             
             return $serializer->build();
         });
