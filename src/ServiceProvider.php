@@ -25,9 +25,6 @@ use Illuminate\Support\ServiceProvider as BaseServiceProvider;
  */
 class ServiceProvider extends BaseServiceProvider
 { 
-
-    protected $defer = true;
-    
     /**
      * Boot service provider.
      */
@@ -47,18 +44,6 @@ class ServiceProvider extends BaseServiceProvider
     {
         $this->registerAnnotations();
         $this->registerSerializer();
-    }
-
-    /**
-     * Get the services provided by the provider.
-     *
-     * @return array
-     */
-    public function provides()
-    {
-        return [
-            Serializer::class
-        ];
     }
 
     protected function registerCustomHandlers(SerializerBuilder $serializer, array $handlers)
