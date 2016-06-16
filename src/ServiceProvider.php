@@ -15,6 +15,7 @@ use JMS\Serializer\Serializer;
 use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\SerializerInterface;
 use JMS\Serializer\Handler\HandlerRegistry;
+use JMS\Serializer\Naming\IdenticalPropertyNamingStrategy;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
@@ -66,6 +67,7 @@ class ServiceProvider extends BaseServiceProvider
 
             $serializer = $this->getSerializer()
               ->setCacheDir($config['cache'])
+              ->setPropertyNamingStrategy(new SerializedNameAnnotationStrategy(new IdenticalPropertyNamingStrategy()))
               ->addDefaultHandlers();
 
             $this->registerCustomHandlers($serializer, $config['handlers']);
