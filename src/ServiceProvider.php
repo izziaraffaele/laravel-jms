@@ -16,6 +16,7 @@ use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\SerializerInterface;
 use JMS\Serializer\Handler\HandlerRegistry;
 use JMS\Serializer\Naming\IdenticalPropertyNamingStrategy;
+use JMS\Serializer\Naming\SerializedNameAnnotationStrategy;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
