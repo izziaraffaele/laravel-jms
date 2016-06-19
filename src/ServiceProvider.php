@@ -11,6 +11,7 @@
  */
 namespace IRWeb\LaravelJMS;
 
+use IRWeb\LaravelJMS\Console\Commands\CacheClearCommand;
 use JMS\Serializer\Serializer;
 use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\SerializerInterface;
@@ -46,6 +47,7 @@ class ServiceProvider extends BaseServiceProvider
     {
         $this->registerAnnotations();
         $this->registerSerializer();
+        $this->registerConsoleCommands();
     }
 
     protected function registerCustomHandlers(SerializerBuilder $serializer, array $handlers)
@@ -77,6 +79,16 @@ class ServiceProvider extends BaseServiceProvider
         });
 
         $this->app->bind(SerializerInterface::class, Serializer::class);
+    }
+
+    /**
+     * Register console commands
+     */
+    protected function registerConsoleCommands()
+    {
+        $this->commands([
+            CacheClearCommand::class,
+        ]);
     }
 
     /**
