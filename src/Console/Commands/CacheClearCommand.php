@@ -31,6 +31,7 @@ class CacheClearCommand extends Command
         if(count($filesystem->allFiles($cachePath)))
         {
             $filesystem->deleteDirectory($cachePath);
+            $this->info('JMS cache cleared!');
         } 
     }
 }
