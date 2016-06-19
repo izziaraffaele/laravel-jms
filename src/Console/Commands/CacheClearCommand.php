@@ -2,13 +2,9 @@
 
 namespace IRWeb\LaravelJMS\Console\Commands;
 
-use Doctrine\Common\Cache\ApcCache;
-use Doctrine\Common\Cache\XcacheCache;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use InvalidArgumentException;
-use LogicException;
+use Illuminate\Console\Command;
 
-class ClearCacheCommand extends Command
+class CacheClearCommand extends Command
 {
     /**
      * The name and signature of the console command.
@@ -29,8 +25,12 @@ class ClearCacheCommand extends Command
      */
     public function fire()
     {
-        $cachePath = app('jms.cache');
+        $cachePath = config('jms.cache');
+        $filesystem = app('filesystem.disk');
 
-        if(file_exists($cachePath)) unlink($cachePath);
+        if(count($filesystem->allFiles($cachePath)))
+        {
+            $filesystem->deleteDirectory($cachePath);
+        } 
     }
 }

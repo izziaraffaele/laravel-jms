@@ -27,6 +27,7 @@
     "monolog/monolog": "1.*",
     "jms/serializer": "^1.1",
     "illuminate/support": "^5.1",
+    "illuminate/console": "^5.1",
     "doctrine/common": "^2.6"
   },
   "require-dev": {
