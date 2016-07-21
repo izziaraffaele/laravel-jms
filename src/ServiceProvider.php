@@ -66,14 +66,13 @@ class ServiceProvider extends BaseServiceProvider
     protected function registerSerializer()
     {
         $this->app->singleton(Serializer::class, function ($app) {
-            $config = config('jms');
-
             $serializer = $this->getSerializer()
-              ->setCacheDir($config['cache'])
+              ->setDebug(config('app.debug'))
+              ->setCacheDir(config('jms.cache'))
               ->setPropertyNamingStrategy(new SerializedNameAnnotationStrategy(new IdenticalPropertyNamingStrategy()))
               ->addDefaultHandlers();
 
-            $this->registerCustomHandlers($serializer, $config['handlers']);
+            $this->registerCustomHandlers($serializer, config('jms.handlers'));
             
             return $serializer->build();
         });
@@ -111,6 +110,6 @@ class ServiceProvider extends BaseServiceProvider
 
     protected function getSerializer()
     {
-        return SerializerBuilder::create()->setDebug(config('app.debug'));
+        return SerializerBuilder::create();
     }
 }

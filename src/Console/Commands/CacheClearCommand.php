@@ -26,11 +26,10 @@ class CacheClearCommand extends Command
     public function fire()
     {
         $cachePath = config('jms.cache');
-        $filesystem = app('filesystem.disk');
 
         if(count($filesystem->allFiles($cachePath)))
         {
-            $filesystem->deleteDirectory($cachePath);
+            \Filesystem::deleteDirectory($cachePath);
             $this->info('JMS cache cleared!');
         } 
     }
